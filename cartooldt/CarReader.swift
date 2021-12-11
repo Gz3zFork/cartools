@@ -57,7 +57,14 @@ public class Reader<T> where T: Rendition {
                 return nil
             }
             let name = catalog._themeStore()?.renditionName(forKeyList: key.keyList())
-            return T(rendition, name ?? "")
+            
+            let appearance  = key.themeAppearance
+            
+            let s = catalog._themeStore().name(forAppearanceIdentifier: UInt16(appearance) )
+            
+            let t = T(rendition, name ?? "", s as! String)
+            
+            return t
         }
         return result
     }

@@ -18,7 +18,9 @@
 @property(nonatomic) long long themeDeploymentTarget;
 @property(nonatomic) long long themeDisplayGamut;
 @property(nonatomic) long long themeLocalization;
+
 @property(nonatomic) long long themeAppearance;
+
 @property(nonatomic) long long themeIdentifier;
 @property(nonatomic) long long themeGraphicsClass;
 @property(nonatomic) long long themeMemoryClass;

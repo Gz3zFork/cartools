@@ -42,6 +42,8 @@ public class Rendition {
     }
     
     public let renditionName: String
+    public let appearance: String
+    
     
     public var scale: Int {
         Int(internalRendition.scale())
@@ -69,9 +71,10 @@ public class Rendition {
     
     internal var internalRendition: CUIThemeRendition
     
-    required init(_ rendition: CUIThemeRendition, _ renditionName: String) {
+    required init(_ rendition: CUIThemeRendition, _ renditionName: String, _ appearance: String) {
         self.internalRendition = rendition
         self.renditionName = renditionName
+        self.appearance = appearance
     }
     
     public func unsafeCreateImage() -> CGImage? {
@@ -91,16 +94,36 @@ public class Rendition {
     @discardableResult
     public func writeTo(_ providedURL: URL, options: Data.WritingOptions = [.atomicWrite]) throws -> URL {
         var fileURL = providedURL
+        
+        //UIAppearanceAny UIAppearanceLight UIAppearanceDark
+        fileURL.appendPathComponent(appearance)
+            
+        NSLog("%@", appearance);
+            
+            
         if !renditionName.isEmpty {
             fileURL.appendPathComponent(renditionName)
         }
+        
+        
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             try FileManager.default.createDirectory(at: fileURL, withIntermediateDirectories: true, attributes: nil)
         }
+        
+        
         if scale > 1 {
+
+        
             let file = URL(string: "file:///\(fileName)".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)!
             let pathExtension = file.pathExtension
-            fileURL.appendPathComponent("\(fileName.dropLast(pathExtension.count + 1))@\(scale)x.\(pathExtension)")
+            
+            //change
+            //fileURL.appendPathComponent("\(fileName.dropLast(pathExtension.count + 1))@\(scale)x.\(pathExtension)")
+            
+            fileURL.appendPathComponent("\(renditionName)@\(scale)x.\(pathExtension)")
+            //change
+            
+            
         } else {
             fileURL.appendPathComponent(fileName)
         }
